@@ -12,7 +12,7 @@ int generate_power_law_levels() {
     
     // Generate power-law volume levels
     for (uint8_t i = 0; i < VOLUME_STEPS; i++) {
-        levels[i] = (int)(pow((i - 101) / (double)VOLUME_STEPS, 2) * ADC_MAX);
+        levels[i] = 1 + (int)(pow((i - 101) / (double)VOLUME_STEPS, 2) * ADC_MAX);
         //levels[i] = ADC_MAX - (int)(pow((i + 1) / (double)VOLUME_STEPS, 2) * ADC_MAX);
     }
 
@@ -35,16 +35,11 @@ int get_volume_level(uint16_t adc_value, const uint16_t levels[], uint8_t num_st
 
     // If not within the deadzone, find the new level
     for (uint8_t i = 0; i < num_steps; i++) {
-        if (adc_value >= levels[i] + DEADZONE) {
-            // Only update the level if the ADC value is outside the deadzone of the new level
-            if (*last_level != i) {
-                *last_level = i; // Update the last level
-            }
-            return i;
+        if (adc_value > levels[i] + DEADZONE) { 
+            *last_level = i - 1;  
+            return i - 1;
         }
     }
 
-    // If the ADC value is greater than all thresholds, set to the maximum level
-    *last_level = num_steps - 1;
     return num_steps - 1;
 }

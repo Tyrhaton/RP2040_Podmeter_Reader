@@ -33,7 +33,7 @@ extern volatile uint16_t adc_value;
 // Global Variables
 #define VOLUME_STEPS 101  // Number of volume levels (0 to 100)
 #define ADC_MAX 4095    // 12-bit ADC maximum value
-#define DEADZONE 0   // Deadzone margin to avoid jitter
+#define DEADZONE 25   // Deadzone margin to avoid jitter
 
 extern volatile uint8_t led;
 extern volatile uint8_t previous_led;
